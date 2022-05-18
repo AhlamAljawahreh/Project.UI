@@ -1,0 +1,49 @@
+﻿@page "/meals"
+@using Project.DataModels;
+@using Project.UI.Services;
+@inject IProductServices _productService;
+@code {
+    private IEnumerable<Product> Data = null;
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        Data = await _productService.GetProducts();
+    }
+}
+
+<h3>GridView</h3>
+@if(Data == null)
+            {
+
+
+<h4>loading ... </h4>            }
+            else
+            {
+                @if(Data.Any())
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Meal</th>
+                                <th>image</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var item in Data)
+                    {
+                            <tr>
+                                <td>@item.ProductId</td>
+                                <td>@item.name</td>
+                                <td>@item.Image</td>
+                                <td>@item.Description</td>
+                                <td>@item.Price</td>
+                            </tr>
+                    }
+                        </tbody>
+                    </table>
+                }
+            }
+

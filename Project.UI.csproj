@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview3.20168.3" />
+    <PackageReference Include="TypeCache" Version="1.0.67" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Project.DataModel\Project.DataModels.csproj" />
+  </ItemGroup>
+
+</Project>
