@@ -15,37 +15,37 @@
 
 <h3>GridView</h3>
 @if (Data == null)
-{
+            {
 
 
     <h4>loading ... </h4> }
-else
-{
+            else
+            {
     @if (Data.Any())
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Meal</th>
-                    <th>image</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Data)
                 {
-                    <tr>
-                        <td>@item.ProductId</td>
-                        <td>@item.name</td>
-                        <td>@item.Image</td>
-                        <td>@item.Description</td>
-                        <td>@item.Price</td>
-                    </tr>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Meal</th>
+                                <th>image</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var item in Data)
+                    {
+                            <tr>
+                                <td>@item.ProductId</td>
+                                <td>@item.name</td>
+                                <td>@item.Image</td>
+                                <td>@item.Description</td>
+                                <td>@item.Price</td>
+                            </tr>
+                    }
+                        </tbody>
+                    </table>
                 }
-            </tbody>
-        </table>
-    }
-}
+            }
 
