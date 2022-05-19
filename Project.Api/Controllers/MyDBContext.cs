@@ -25,6 +25,17 @@ namespace Project.Api.Controllers
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Product>().ToTable("Products");
             modelBuilder.Entity<Order>().ToTable("Orders");
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                FirstName = "Admin",
+                LastName = "Admin",
+                Username = "Admin",
+                Role = "Admin",
+                Password="1234",
+                UserId =100,
+
+            });
+
 
 
         }

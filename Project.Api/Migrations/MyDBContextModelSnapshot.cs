@@ -88,6 +88,17 @@ namespace Project.Api.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 100,
+                            FirstName = "Admin",
+                            LastName = "Admin",
+                            Password = "1234",
+                            Role = "Admin",
+                            Username = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Project.DataModels.Product", b =>

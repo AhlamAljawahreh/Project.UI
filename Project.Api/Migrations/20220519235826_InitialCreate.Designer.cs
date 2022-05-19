@@ -10,8 +10,8 @@ using Project.Api.Controllers;
 namespace Project.Api.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    [Migration("20220518181509_initialAdd")]
-    partial class initialAdd
+    [Migration("20220519235826_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -90,6 +90,17 @@ namespace Project.Api.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 100,
+                            FirstName = "Admin",
+                            LastName = "Admin",
+                            Password = "1234",
+                            Role = "Admin",
+                            Username = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Project.DataModels.Product", b =>

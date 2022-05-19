@@ -10,7 +10,7 @@ namespace Project.UI.Services
 {
     public class ProductServices : IProductServices
     {
-        private HttpClient httpClient;
+        private readonly HttpClient httpClient;
         public ProductServices(HttpClient _httpClient)
         {
             this.httpClient = _httpClient;

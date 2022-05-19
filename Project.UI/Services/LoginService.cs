@@ -13,15 +13,11 @@ namespace Project.UI.Services
     public class LoginService : ILoginService
     {
         private readonly HttpClient httpClient;
-        public Result result { set; get; }
-        public string token { set; get; }
 
         public LoginService(HttpClient _httpClient) 
         {
             this.httpClient = _httpClient;
         }
-
-
 
         public async Task< Result> Authenticate(UserCred user)
         {
@@ -31,12 +27,6 @@ namespace Project.UI.Services
             {
                 Console.WriteLine("Error");
             }
-
-            this.result = await response.Content.ReadFromJsonAsync<Result>();
-            this.token=result.Token;
-
-            Console.WriteLine($"Done?{this.token}");
-            Console.WriteLine($"ID?{this.result.UserId}");
 
             return await response.Content.ReadFromJsonAsync<Result>();
         }

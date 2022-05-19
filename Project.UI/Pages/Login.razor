@@ -1,14 +1,20 @@
-﻿@page "/login"
+﻿@page "/"
 @using Project.DataModels;
 @using Project.UI.Services;
 @inject ILoginService _loginService;
 @inject LoginService login;
 @inject NavigationManager NavigationManager;
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+@inject ProtectedLocalStorage BrowserStorage
+
+
 
 @code {
 
 
     private UserCred user { set; get; } = new UserCred();
+
+    public bool isLoggedIn { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -21,13 +27,23 @@
         Console.WriteLine("done");
         Console.WriteLine(user.Username);
         Console.WriteLine(user.Password);
-        Result httpResponse = await _loginService.Authenticate(user);
+        var httpResponse = await _loginService.Authenticate(user);
+
+
+        await BrowserStorage.SetAsync("UserId", httpResponse.UserId);
+        await BrowserStorage.SetAsync("UserName", httpResponse.Username);
+        await BrowserStorage.SetAsync("Role", httpResponse.Role);
+        await BrowserStorage.SetAsync("token", httpResponse.Token);
+
+
+
 
         Console.WriteLine($"Done? {httpResponse.Token}  ");
-        if (login.result.Role=="Admin")
+        if (httpResponse.Role == "Admin")
         {
-            NavigationManager.NavigateTo("/");
+            isLoggedIn = true;
 
+            NavigationManager.NavigateTo("/meals");
         }
         //Console.WriteLine("Wait");
     }
@@ -37,17 +53,20 @@
 }
 
 
-<h3>GridView</h3>
 
-
-<EditForm Model=@user OnSubmit="@onSubmit">
-    <div class="form-group">
-        <label>UserName</label>
-        <InputText id="username" class="form-control" name="userName" @bind-Value="user.Username"></InputText>
+<div class="card">
+    <h3>Login</h3>
+    <div class="card-body">
+        <EditForm Model=@user OnSubmit="@onSubmit">
+            <div class="form-group">
+                <label>UserName</label>
+                <InputText id="username" class="form-control" name="userName" @bind-Value="user.Username"></InputText>
+            </div>
+            <div class="form-group">
+                <label>Password </label>
+                <InputText id="Password" type="password" class="form-control" name="Password" @bind-Value="user.Password"></InputText>
+            </div>
+            <button type="submit" class="btn btn-info">Login</button>
+        </EditForm>
     </div>
-    <div class="form-group">
-        <label>Password </label>
-        <InputText id="Password" type="password" class="form-control" name="Password" @bind-Value="user.Password"></InputText>
-    </div>
-    <button type="submit">Submit</button>
-</EditForm>
+</div>

@@ -2,7 +2,7 @@
 
 namespace Project.Api.Migrations
 {
-    public partial class initialAdd : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,6 +58,11 @@ namespace Project.Api.Migrations
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserId", "FirstName", "LastName", "Password", "Role", "Username" },
+                values: new object[] { 100, "Admin", "Admin", "1234", "Admin", "Admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_OrderId",
