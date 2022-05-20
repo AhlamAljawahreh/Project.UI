@@ -10,7 +10,7 @@ using Project.Api.Controllers;
 namespace Project.Api.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    [Migration("20220519235826_InitialCreate")]
+    [Migration("20220521135053_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

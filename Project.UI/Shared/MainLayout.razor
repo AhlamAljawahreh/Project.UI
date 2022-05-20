@@ -1,12 +1,28 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+@inject ProtectedLocalStorage BrowserStorage;
+@inject NavigationManager NavigationManager;
+
+
+
+@code{
+    public async void Logout()
+    {
+
+        await BrowserStorage.DeleteAsync("UserId");
+        await BrowserStorage.DeleteAsync("UserName");
+        await BrowserStorage.DeleteAsync("Role");
+        await BrowserStorage.DeleteAsync("token");
+
+        NavigationManager.NavigateTo("/");
+
+    }
+}
 
 <div class="page">
-   
-    <div class="main">
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">Meals</a>
 
-        </div>
+    <div class="main">
+
 
         <div class="content px-4">
             @Body

@@ -41,7 +41,18 @@ namespace Project.Api.Controllers
 
             return order;
         }
+        [HttpGet("myorder/{id}")]
+        public async Task<ActionResult<IEnumerable<Product>>> GetMyOrder(int id)
+        {
+            var order = await _context.Products.Where(t => t.OrderId == id).ToListAsync();
 
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return order;
+        }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOrder(int id, Order order)

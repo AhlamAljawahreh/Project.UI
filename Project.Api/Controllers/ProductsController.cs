@@ -25,6 +25,7 @@ namespace Project.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
+         
             return await _context.Products.ToListAsync();
         }
 

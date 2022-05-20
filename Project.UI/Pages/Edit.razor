@@ -1,5 +1,4 @@
-﻿
-@page "/new_meals"
+﻿@page "/edit_meals/{id}"
 @using Project.DataModels;
 @using Project.UI.Services;
 @inject IProductServices _productService;
@@ -13,14 +12,16 @@
 
 
 @code {
+    [Parameter]
+    public string id { set; get; }
     public string token { set; get; }
     public string role { set; get; }
-    private IFormFile file { set; get; }
     private Product product { set; get; } = new Product();
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            this.product = await _productService.GetMeal(Int16.Parse(id));
             await Read();
 
             StateHasChanged();
@@ -45,24 +46,26 @@
         this.role = roleResult.Success ? roleResult.Value : "";
 
     }
-    public async void onSubmit()
+    public async void onEdit()
     {
-        if (product.Image != null)
-        {
-            var httpResponse = await _productService.AddMeal(product);
+        var httpResponse = await _productService.EditMeal(product, Int16.Parse(id));
 
-            if (httpResponse.name == product.name)
-            {
-                NavigationManager.NavigateTo("/meals");
-            }
-        }
-
+            NavigationManager.NavigateTo("/meals");
+        
     }
     private async void upload(InputFileChangeEventArgs e)
     {
 
         var httpResponse = await _photoService.AddItemPhotoAsync(e.File);
         product.Image = httpResponse.SecureUrl.ToString();
+    }
+    public async void delete()
+    {
+        var httpResponse = await _productService.DeleteMeal(Int16.Parse(id));
+        if (httpResponse.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo("/meals");
+        }
     }
 
 
@@ -95,7 +98,7 @@ else
 
         <div class="position-absolute  top-50 start-50 translate-middle border align-content-center justify-content-center align-items-center p-5 bg-light">
             <h3 class="pb-4">Add Meal</h3>
-            <EditForm Model=@product OnSubmit="@onSubmit">
+            <EditForm Model=@product OnSubmit="@onEdit">
                 <div class="form-group mb-3">
                     <label>UserName</label>
                     <InputText id="username" class="form-control" name="userName" @bind-Value="product.name"></InputText>
@@ -113,10 +116,11 @@ else
                     <InputFile OnChange="upload" id="Password" class="form-control" name="Password"></InputFile>
 
                 </div>
-                <button type="submit" class="btn btn-info mb-3">Create</button>
+                <button type="submit" class="btn btn-info mb-3">Edit </button>
                 <p></p>
                 <small>*wait a few second after choose the image file before create new meal </small>
             </EditForm>
+            <button type="submit" class="btn btn-info mb-3" @onclick=" () => { delete(); }">Delete </button>
         </div>
 
 
@@ -124,3 +128,4 @@ else
     </div>
 
 }
+

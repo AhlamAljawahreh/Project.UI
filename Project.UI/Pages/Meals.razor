@@ -3,17 +3,32 @@
 @using Project.UI.Services;
 @inject IProductServices _productService;
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
-@inject ProtectedLocalStorage BrowserStorage
+@inject ProtectedLocalStorage BrowserStorage;
+@inject NavigationManager NavigationManager;
+
 
 @code {
     public string token { set; get; }
     public string role { set; get; }
+    public bool isLoggedIn { set; get; }
+    public int id { set; get; }
+
 
     private IEnumerable<Product> Data = null;
+    private List<Product> MyData = new List<Product>();
+
     protected override async Task OnInitializedAsync()
     {
+
         await base.OnInitializedAsync();
         Data = await _productService.GetProducts();
+        foreach(var item in Data)
+        {
+            if(item.OrderId == null)
+            {
+                MyData.Add(item);
+            }
+        }
         await Read();
     }
     public async Task Read()
@@ -23,46 +38,102 @@
         var roleResult = await BrowserStorage.GetAsync<string>("Role");
         this.role = roleResult.Success ? roleResult.Value : "";
 
+
+
     }
-}
-
-<h3>GridView</h3>
-<h6>@this.token</h6>
-<h6>@this.role</h6>
-
-   
-@if (Data == null)
-            {
-
-
-    <h4>loading ... </h4> }
-            else
-            {
-    @if (Data.Any())
+    public async void Logout()
     {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Meal</th>
-                    <th>image</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Data)
-                {
-                    <tr>
-                        <td>@item.ProductId</td>
-                        <td>@item.name</td>
-                        <td>@item.Image</td>
-                        <td>@item.Description</td>
-                        <td>@item.Price</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+
+        await BrowserStorage.DeleteAsync("UserId");
+        await BrowserStorage.DeleteAsync("UserName");
+        await BrowserStorage.DeleteAsync("Role");
+        await BrowserStorage.DeleteAsync("token");
+
+        NavigationManager.NavigateTo("/");
+
     }
+    public  void goTo()
+    {
+
+        NavigationManager.NavigateTo("new_meals");
+
+    }
+    public void Edit()
+    {
+
+        NavigationManager.NavigateTo("/edit_meals");
+
+    }
+
 }
+
+<div class="main">
+    <div class="top-row px-4 d-inline font-weight-bolder  ">
+
+        <NavLink class="nav-link float-right  " @onclick="Logout">
+            <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+        </NavLink>
+        @if (this.role == "Admin")
+        {
+            <NavLink class="nav-link float-right" href="new_meals">
+                Orders
+            </NavLink>
+            <NavLink class="nav-link float-right" href="new_meals">
+                New Meal
+            </NavLink>
+        }
+
+
+    </div>
+
+
+    <h3>Meals</h3>
+    @if (MyData.Any())
+    {
+
+        <div class="row">
+            @foreach (var item in MyData)
+            {
+                <div class=" col-sm-3 col-md-3 col-2 bg-light " style="width: 18rem;">
+                    <div class="card " style="width: 25rem;">
+                        <img class="card-img-top" src=@item.Image alt="meal image">
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bolder">@item.name </h5>
+                            <small>@item.Price</small>
+                            <p class="card-text">@item.Description</p>
+                            @if (this.role == "USER")
+                            {
+                                <a href="#" class="btn btn-primary">Add to my Order</a>}
+                            @if (this.role == "Admin")
+                            {
+                                <a class="btn btn-primary" href="edit_meals/@item.ProductId"> Edit or delete </a>
+                               
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (this.role == "Admin")
+            {
+                <div class=" col-sm-3 col-md-3 col-2 bg-light service-div" style="width: 18rem;" @onclick="goTo">
+                    <div class="card " style="width: 25rem; height: 100%;">
+
+                        <div class="card-body col">
+
+                            <div class="align-middle">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="350" height="350" fill="currentColor" class="bi bi-plus-lgb  " viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>}
+
+
+        </div>
+
+
+    }
+
+</div>
 

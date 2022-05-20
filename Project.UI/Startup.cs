@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Project.UI.Interfaces;
 using Project.UI.Services;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,11 @@ namespace Project.UI
 
             });
             services.AddHttpClient<IUserServices, UsersServices>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44331/");
+
+            });
+            services.AddHttpClient<IOrderServices, OrderServices>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:44331/");
 

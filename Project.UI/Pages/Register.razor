@@ -21,32 +21,40 @@
             NavigationManager.NavigateTo("/");
         }
     }
+      public void goTo()
+    {
+
+        NavigationManager.NavigateTo("/");
+
+    }
 
 
 }
 
 
-<div class="card">
-    <h3>Register</h3>
-    <div class="card-body">
+<div class="align-content-center justify-content-center align-items-center">
+
+    <div class="position-absolute  top-50 start-50 translate-middle border align-content-center justify-content-center align-items-center p-5 bg-light">
+        <h3 class="pb-4">Register</h3>
         <EditForm Model=@user OnSubmit="@onSubmit">
             <div class="form-group">
                 <label>UserName</label>
-                <InputText id="username" class="form-control" name="userName" @bind-Value="user.Username"></InputText>
+                <InputText id="username" class="form-control mb-3" name="userName" @bind-Value="user.Username"></InputText>
             </div>
             <div class="form-group">
                 <label>FirstName </label>
-                <InputText id="FirstName" class="form-control" name="FirstName" @bind-Value="user.FirstName"></InputText>
+                <InputText id="FirstName" class="form-control mb-3" name="FirstName" @bind-Value="user.FirstName"></InputText>
             </div>
             <div class="form-group">
                 <label>LastName </label>
-                <InputText id="LastName"  class="form-control" name="LastName" @bind-Value="user.LastName"></InputText>
+                <InputText id="LastName" class="form-control mb-3" name="LastName" @bind-Value="user.LastName"></InputText>
             </div>
             <div class="form-group">
                 <label>Password </label>
-                <InputText id="Password" type="Password" class="form-control" name="Password" @bind-Value="user.Password"></InputText>
+                <InputText id="Password" type="Password" class="form-control mb-3" name="Password" @bind-Value="user.Password"></InputText>
             </div>
-            <button type="submit" class="btn btn-info">SignUp</button>
+            <button type="submit" class="btn btn-info mb-3">SignUp</button>
+            <h6>you have account..! <a @onclick="goTo" href="">Login</a></h6>
         </EditForm>
     </div>
 </div>

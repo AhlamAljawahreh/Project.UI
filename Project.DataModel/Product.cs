@@ -12,13 +12,12 @@ namespace Project.DataModels
     {
         [Key]
         public int ProductId { get; set; }
-        //[ForeignKey("User")]
-        //public int UserId { get; set; }
-      //  public User User { get; set; }
         public string name { get; set; }
         public int Price { get; set; }
         public string Image { get; set; }
         public string Description { get; set; }
-        
+        [ForeignKey("Order")]
+        public int ? OrderId { get; set; }
+       
     }
 }
