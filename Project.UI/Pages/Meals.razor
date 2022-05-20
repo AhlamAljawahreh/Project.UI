@@ -6,33 +6,38 @@
 @inject ProtectedLocalStorage BrowserStorage
 
 @code {
-    public string currentInputValue { set; get; }
+    public string token { set; get; }
+    public string role { set; get; }
+
     private IEnumerable<Product> Data = null;
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         Data = await _productService.GetProducts();
-         await Read();
+        await Read();
     }
     public async Task Read()
     {
         var result = await BrowserStorage.GetAsync<string>("token");
-        this.currentInputValue = result.Success ? result.Value : "";
-        Console.WriteLine(this.currentInputValue);
+        this.token = result.Success ? result.Value : "";
+        var roleResult = await BrowserStorage.GetAsync<string>("Role");
+        this.role = roleResult.Success ? roleResult.Value : "";
+
     }
 }
 
 <h3>GridView</h3>
-<h6>@this.currentInputValue</h6>
+<h6>@this.token</h6>
+<h6>@this.role</h6>
 
    
 @if (Data == null)
-{
+            {
 
 
     <h4>loading ... </h4> }
-else
-{
+            else
+            {
     @if (Data.Any())
     {
         <table class="table">

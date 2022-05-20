@@ -16,8 +16,6 @@ namespace Project.DataModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Role { get; set; } = "USER";
-
-      // [JsonIgnore]
         public string Password { get; set; }
 
 

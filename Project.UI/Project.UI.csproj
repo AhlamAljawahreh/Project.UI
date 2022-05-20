@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Abp" Version="7.2.1" />
+    <PackageReference Include="CloudinaryDotNet" Version="1.17.0" />
     <PackageReference Include="DocuSign.eSign.dll" Version="5.10.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview3.20168.3" />

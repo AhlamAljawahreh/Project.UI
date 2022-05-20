@@ -9,5 +9,6 @@ namespace Project.UI.Services
     public interface IProductServices
     {
         Task<IEnumerable<Product>> GetProducts();
+        Task<Product> AddMeal(Product product);
     }
 }

@@ -41,6 +41,15 @@ namespace Project.UI
                client.BaseAddress = new Uri("https://localhost:44331/");
 
             });
+            services.AddHttpClient<IUserServices, UsersServices>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44331/");
+
+            });
+            services.AddSingleton<IPhotoService, PhotoService>();
+ 
+            
+
         }
 
 

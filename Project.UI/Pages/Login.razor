@@ -14,7 +14,7 @@
 
     private UserCred user { set; get; } = new UserCred();
 
-    public bool isLoggedIn { get; set; } = false;
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -39,13 +39,13 @@
 
 
         Console.WriteLine($"Done? {httpResponse.Token}  ");
-        if (httpResponse.Role == "Admin")
+        if (httpResponse.Token.Length >0)
         {
-            isLoggedIn = true;
+            
+            await BrowserStorage.SetAsync(" isLoggedIn", true);
 
             NavigationManager.NavigateTo("/meals");
         }
-        //Console.WriteLine("Wait");
     }
 
 
@@ -69,4 +69,6 @@
             <button type="submit" class="btn btn-info">Login</button>
         </EditForm>
     </div>
+
+    <small>you dont have account <a href="register">Register</a></small>
 </div>

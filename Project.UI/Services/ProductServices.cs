@@ -20,5 +20,11 @@ namespace Project.UI.Services
             return await httpClient.GetJsonAsync<Product[]>("api/products");
         }
 
+        public async Task<Product> AddMeal(Product product)
+        {
+            return await httpClient.PostJsonAsync<Product>("api/products", product);
+        }
+
     }
+     
 }
