@@ -89,33 +89,40 @@
 
 
     </div>
-    <h3>Order @this.id</h3>
-    <h3 class="float-right nav-link">Bill: @bill JD</h3>
-    <div class="row">
+    @if (this.role != "Admin")
+    {
+        <h4>You cant Add Meal .. (Unauthorized) </h4>
+    }
+    else
+    {
+        <h3>Order @this.id</h3>
+        <h3 class="float-right nav-link">Bill: @bill JD</h3>
+        <div class="row">
 
-        @if (Data == null)
-        {
-
-
-            <h4>loading ... </h4> }
-        else
-        {
-            @if (Data.Any())
+            @if (Data == null)
             {
-                @foreach (var item in Data)
+
+
+                <h4>loading ... </h4> }
+            else
+            {
+                @if (Data.Any())
                 {
-                    <div class=" col-sm-3 col-md-3 col-2 bg-light " style="width: 18rem;">
-                        <div class="card " style="width: 25rem;">
-                            <img class="card-img-top" src=@item.Image alt="meal image">
-                            <div class="card-body">
-                                <h5 class="card-title font-weight-bolder">@item.name </h5>
-                                <small>@item.Price</small>
-                                <p class="card-text">@item.Description</p>
+                    @foreach (var item in Data)
+                    {
+                        <div class=" col-sm-3 col-md-3 col-2 bg-light " style="width: 18rem;">
+                            <div class="card " style="width: 25rem;">
+                                <img class="card-img-top" src=@item.Image alt="meal image">
+                                <div class="card-body">
+                                    <h5 class="card-title font-weight-bolder">@item.name </h5>
+                                    <small>@item.Price</small>
+                                    <p class="card-text">@item.Description</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 }
             }
-        }
         </div>
-</div>
+    }
+    </div>

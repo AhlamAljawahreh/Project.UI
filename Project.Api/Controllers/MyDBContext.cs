@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Project.DataModels;
 
-
+// to create database & migration
 namespace Project.Api.Controllers
 {
     public class MyDBContext : DbContext

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Project.DataModels;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Project.Api.Controllers
 {
@@ -18,7 +17,6 @@ namespace Project.Api.Controllers
 
         private readonly IJWTAuthenticationManager jWTAuthenticationManager;
         private readonly MyDBContext context;
-       // public List<User> users;
 
 
         public LoginController(IJWTAuthenticationManager jWTAuthenticationManager, MyDBContext context)
@@ -28,8 +26,7 @@ namespace Project.Api.Controllers
 
         }
 
-        // GET: api/<signinController>
-      
+        //this method to login and create token (jwt)
 
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] UserCred userCred)
@@ -46,6 +43,7 @@ namespace Project.Api.Controllers
                 
             }
             var token = jWTAuthenticationManager.Authenticate(userCred.Username, userCred.Password);
+            //this to control the response message
             Result result = new Result();
             User myUser = users.Find(u => u.Username == userCred.Username && u.Password == userCred.Password);
             result.FirstName = myUser.FirstName;

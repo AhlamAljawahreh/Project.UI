@@ -20,7 +20,9 @@ namespace Project.Api.Controllers
             _context = context;
         }
 
-        // GET: api/Products
+
+        //to get all Orders
+        // GET: api/Orders
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrderss()
@@ -28,7 +30,8 @@ namespace Project.Api.Controllers
             return await _context.Orders.ToListAsync();
         }
 
-        // GET: api/Products/5
+        //to get one order using id
+        // GET: api/Orders/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(int id)
         {
@@ -41,6 +44,8 @@ namespace Project.Api.Controllers
 
             return order;
         }
+
+        //to get all products in one order
         [HttpGet("myorder/{id}")]
         public async Task<ActionResult<IEnumerable<Product>>> GetMyOrder(int id)
         {
@@ -53,7 +58,7 @@ namespace Project.Api.Controllers
 
             return order;
         }
-
+        //to edit order by id
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOrder(int id, Order order)
         {
@@ -82,6 +87,9 @@ namespace Project.Api.Controllers
 
             return NoContent();
         }
+
+
+        //to create new order 
         [HttpPost]
         public async Task<ActionResult<Order>> PostProduct(Order order)
         {
@@ -91,6 +99,7 @@ namespace Project.Api.Controllers
             return CreatedAtAction("GetOrder", new { id = order.OrderId }, order);
         }
 
+        //to delete order by ad 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Order>> DeleteProduct(int id)
         {
@@ -101,7 +110,7 @@ namespace Project.Api.Controllers
                 return NotFound();
             }
             var products = await _context.Products.Where(t => t.OrderId == id).ToListAsync();
-
+            //delete all products have the order id as FK to delete order .
             foreach (var item in products)
             {
                 _context.Products.Remove(item);

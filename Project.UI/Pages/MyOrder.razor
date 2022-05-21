@@ -115,68 +115,74 @@
 
 
     </div>
-    <h3>My Order</h3>
-    <h3 class="float-right nav-link">Bill: @bill JD</h3>
-    @if (Products.Any())
+    @if (this.role == "Admin")
     {
-
-        <div class="row border-top-0 ">
-            @foreach (var item in Products)
-            {
-                <div class=" col-sm-3 col-md-3 col-2 bg-light " style="width: 18rem;">
-                    <div class="card " style="width: 25rem;">
-                        <img class="card-img-top" src=@item.Image alt="meal image">
-                        <div class="card-body">
-                            <h5 class="card-title font-weight-bolder">@item.name </h5>
-                            <small>@item.Price</small>
-                            <p class="card-text">@item.Description</p>
-
-                            @if (this.role == "USER")
-                            {
-                                <div class="form-group mb-3">
-                                    <label>Quantity</label>
-                                </div> <button @onclick="()=> { Remove(item); }" class="btn btn-primary">Delete</button>
-                            }
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    <button @onclick="CheckOut" class="btn btn-success">CheckOut My Order </button>
-
-            }
-            else
-            {
-                <p>your meals will appear here ... </p>
-            }
-    <h3 class="mt-5">Meals</h3>
-    @if (MyData.Any())
-    {
-
-        <div class="row border-top-0 ">
-            @foreach (var item in MyData)
-            {
-                <div class=" col-sm-3 col-md-3 col-2 bg-light " style="width: 18rem;">
-                    <div class="card " style="width: 25rem;">
-                        <img class="card-img-top" src=@item.Image alt="meal image">
-                        <div class="card-body">
-                            <h5 class="card-title font-weight-bolder">@item.name </h5>
-                            <small>@item.Price</small>
-                            <p class="card-text">@item.Description</p>
-
-                            @if (this.role == "USER")
-                            {
-                                <div class="form-group mb-3">
-                                    <label>Quantity</label>
-                                </div> <button @onclick="() => { add(item); }" class="btn btn-primary">Add to my Order</button>
-                            }
-                        </div>
-                    </div>
-                </div>
-            }
-
-        </div>
+        <h4>You cant Add Meal .. (Unauthorized) </h4>
     }
+    else
+    {
+        <h3>My Order</h3>
+        <h3 class="float-right nav-link">Bill: @bill JD</h3>
+        @if (Products.Any())
+        {
 
-</div>
+            <div class="row border-top-0 ">
+                @foreach (var item in Products)
+                {
+                    <div class=" col-sm-3 col-md-3 col-2 bg-light " style="width: 18rem;">
+                        <div class="card " style="width: 25rem;">
+                            <img class="card-img-top" src=@item.Image alt="meal image">
+                            <div class="card-body">
+                                <h5 class="card-title font-weight-bolder">@item.name </h5>
+                                <small>@item.Price</small>
+                                <p class="card-text">@item.Description</p>
+
+                                @if (this.role == "USER")
+                                {
+                                    <div class="form-group mb-3">
+                                        <label>Quantity</label>
+                                    </div> <button @onclick="() => { Remove(item); }" class="btn btn-primary">Delete</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button @onclick="CheckOut" class="btn btn-success">CheckOut My Order </button>
+
+        }
+        else
+        {
+            <p>your meals will appear here ... </p>
+        }
+        <h3 class="mt-5">Meals</h3>
+        @if (MyData.Any())
+        {
+
+            <div class="row border-top-0 ">
+                @foreach (var item in MyData)
+                {
+                    <div class=" col-sm-3 col-md-3 col-2 bg-light " style="width: 18rem;">
+                        <div class="card " style="width: 25rem;">
+                            <img class="card-img-top" src=@item.Image alt="meal image">
+                            <div class="card-body">
+                                <h5 class="card-title font-weight-bolder">@item.name </h5>
+                                <small>@item.Price</small>
+                                <p class="card-text">@item.Description</p>
+
+                                @if (this.role == "USER")
+                                {
+                                    <div class="form-group mb-3">
+                                        <label>Quantity</label>
+                                    </div> <button @onclick="() => { add(item); }" class="btn btn-primary">Add to my Order</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        }
+    }
+    </div>
 

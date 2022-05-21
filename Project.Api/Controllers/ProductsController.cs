@@ -19,7 +19,7 @@ namespace Project.Api.Controllers
         {
             _context = context;
         }
-
+        //get all products
         // GET: api/Products
 
         [HttpGet]
@@ -29,6 +29,8 @@ namespace Project.Api.Controllers
             return await _context.Products.ToListAsync();
         }
 
+
+        //get one product by id 
         // GET: api/Products/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
@@ -43,7 +45,7 @@ namespace Project.Api.Controllers
             return product;
         }
 
-
+        // edit product by id 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduct(int id,Product product)
         {
@@ -73,7 +75,7 @@ namespace Project.Api.Controllers
             return NoContent();
         }
 
-
+        //create new product 
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
@@ -83,7 +85,8 @@ namespace Project.Api.Controllers
             return CreatedAtAction("GetProduct", new { id = product.ProductId }, product);
         }
 
-        // DELETE: api/Movies/5
+        //delete one product by id
+        // DELETE: api/Products/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Product>> DeleteProduct(int id)
         {

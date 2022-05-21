@@ -21,8 +21,9 @@ namespace Project.Api.Controllers
             _context = context;
         }
 
-        // GET: api/Users
 
+        //get all users
+        // GET: api/Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
@@ -30,6 +31,8 @@ namespace Project.Api.Controllers
             return users;
         }
 
+
+        //get one user by userId
         // GET: api/Users/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
@@ -43,6 +46,8 @@ namespace Project.Api.Controllers
 
             return movie;
         }
+
+        //edit one user by id 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
@@ -72,7 +77,7 @@ namespace Project.Api.Controllers
             return NoContent();
         }
 
-
+        //create new user (register)
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
@@ -84,7 +89,7 @@ namespace Project.Api.Controllers
             return CreatedAtAction("GetUser", new { id = user.UserId }, user);
         }
 
-
+        //delete one user by id
         // DELETE: api/Movies/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<User>> DeleteUser(int id)
