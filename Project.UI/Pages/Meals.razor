@@ -108,9 +108,6 @@
                             <h5 class="card-title font-weight-bolder">@item.name </h5>
                             <small>@item.Price</small>
                             <p class="card-text">@item.Description</p>
-                            @if (this.role == "USER")
-                            {
-                                <a href="#" class="btn btn-primary">Add to my Order</a>}
                             @if (this.role == "Admin")
                             {
                                 <a class="btn btn-primary" href="edit_meals/@item.ProductId"> Edit or delete </a>
