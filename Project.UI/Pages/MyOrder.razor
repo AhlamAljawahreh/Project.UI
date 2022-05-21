@@ -1,0 +1,182 @@
+﻿@page "/new_order"
+@using Project.DataModels;
+@using Project.UI.Services;
+@using Project.UI.Interfaces;
+@inject IOrderServices _orderServices
+@inject IProductServices _productService;
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+@inject ProtectedLocalStorage BrowserStorage;
+@inject NavigationManager NavigationManager;
+
+@code {
+    public string token { set; get; }
+    public string UserId { set; get; }
+    public string role { set; get; }
+    public bool isLoggedIn { set; get; }
+    public int id { set; get; }
+    public int Quantity { set; get; }
+    public int bill { set; get; } = 0;
+    public List<Product> Products = new List<Product>();
+    private IEnumerable<Product> Data = null;
+    private List<Product> MyData = new List<Product>();
+    private Order order { set; get; } = new Order();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Data = await _productService.GetProducts();
+            foreach (var item in Data)
+            {
+                if (item.OrderId == null)
+                {
+                    MyData.Add(item);
+                }
+            }
+            await Read();
+
+            StateHasChanged();
+        }
+    }
+    public async Task Read()
+    {
+        var result = await BrowserStorage.GetAsync<string>("token");
+        this.token = result.Success ? result.Value : "";
+        var roleResult = await BrowserStorage.GetAsync<string>("Role");
+        this.role = roleResult.Success ? roleResult.Value : "";
+        var userIdResult = await BrowserStorage.GetAsync<string>("Role");
+        this.UserId = userIdResult.Success ? userIdResult.Value : "";
+
+    }
+    public async void Logout()
+    {
+
+        await BrowserStorage.DeleteAsync("UserId");
+        await BrowserStorage.DeleteAsync("UserName");
+        await BrowserStorage.DeleteAsync("Role");
+        await BrowserStorage.DeleteAsync("token");
+
+        NavigationManager.NavigateTo("/");
+
+    }
+    public void add(Product product)
+    {
+        product.ProductId = 0;
+        Products.Add(product);
+        getMyBill();
+    }
+    public void Remove(Product product)
+    {
+        Products.RemoveAt(Products.IndexOf(product));
+        getMyBill();
+
+
+    }
+    public void getMyBill()
+    {
+        this.bill = 0;
+        foreach(var item in Products)
+        {
+            this.bill += item.Price;
+        }
+    }
+    public async void CheckOut()
+    {
+        order.Products = Products;
+        order.UserId = 0;
+        var httpResponse = await _orderServices.CreateOrder(order);
+
+        if (httpResponse.OrderId != null )
+        {
+            NavigationManager.NavigateTo("/meals");
+        }
+
+    }
+
+
+}
+
+<div class="main">
+    <div class="top-row px-4 d-inline font-weight-bolder  ">
+
+        <NavLink class="nav-link float-right  " @onclick="Logout">
+            <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+        </NavLink>
+        @if (this.role == "Admin")
+        {
+            <NavLink class="nav-link float-right" href="new_meals">
+                Orders
+            </NavLink>
+            <NavLink class="nav-link float-right" href="new_meals">
+                New Meal
+            </NavLink>
+        }
+
+
+
+    </div>
+    <h3>My Order</h3>
+    <h3 class="float-right nav-link">Bill: @bill JD</h3>
+    @if (Products.Any())
+    {
+
+        <div class="row border-top-0 ">
+            @foreach (var item in Products)
+            {
+                <div class=" col-sm-3 col-md-3 col-2 bg-light " style="width: 18rem;">
+                    <div class="card " style="width: 25rem;">
+                        <img class="card-img-top" src=@item.Image alt="meal image">
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bolder">@item.name </h5>
+                            <small>@item.Price</small>
+                            <p class="card-text">@item.Description</p>
+
+                            @if (this.role == "USER")
+                            {
+                                <div class="form-group mb-3">
+                                    <label>Quantity</label>
+                                </div> <button @onclick="()=> { Remove(item); }" class="btn btn-primary">Delete</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    <button @onclick="CheckOut" class="btn btn-success">CheckOut My Order </button>
+
+            }
+            else
+            {
+                <p>your meals will appear here ... </p>
+            }
+    <h3 class="mt-5">Meals</h3>
+    @if (MyData.Any())
+    {
+
+        <div class="row border-top-0 ">
+            @foreach (var item in MyData)
+            {
+                <div class=" col-sm-3 col-md-3 col-2 bg-light " style="width: 18rem;">
+                    <div class="card " style="width: 25rem;">
+                        <img class="card-img-top" src=@item.Image alt="meal image">
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bolder">@item.name </h5>
+                            <small>@item.Price</small>
+                            <p class="card-text">@item.Description</p>
+
+                            @if (this.role == "USER")
+                            {
+                                <div class="form-group mb-3">
+                                    <label>Quantity</label>
+                                </div> <button @onclick="() => { add(item); }" class="btn btn-primary">Add to my Order</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    }
+
+</div>
+

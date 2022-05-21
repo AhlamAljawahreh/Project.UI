@@ -1,26 +1,31 @@
-﻿@page "/orders"
+﻿@page "/single_order/{id}"
 @using Project.DataModels;
 @using Project.UI.Services;
 @using Project.UI.Interfaces;
 @inject IOrderServices _orderServices
+@inject IProductServices _productService;
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 @inject ProtectedLocalStorage BrowserStorage;
 @inject NavigationManager NavigationManager;
 
 
 @code {
+    [Parameter]
+    public string id { set; get; }
     public string token { set; get; }
     public string role { set; get; }
     public bool isLoggedIn { set; get; }
+    public int bill { set; get; } = 0;
 
 
-    private IEnumerable<Order> Data = null;
+    private IEnumerable<Product> Data = null;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            Data = await _orderServices.GetOrders();
+            Data = await _productService.GetOrderProducts(Int16.Parse(this.id));
+             getMyBill();
             await Read();
 
             StateHasChanged();
@@ -32,9 +37,14 @@
         this.token = result.Success ? result.Value : "";
         var roleResult = await BrowserStorage.GetAsync<string>("Role");
         this.role = roleResult.Success ? roleResult.Value : "";
-
-
-
+    }
+    public void getMyBill()
+    {
+        this.bill = 0;
+        foreach (var item in Data)
+        {
+            this.bill += item.Price;
+        }
     }
     public async void Logout()
     {
@@ -45,18 +55,6 @@
         await BrowserStorage.DeleteAsync("token");
 
         NavigationManager.NavigateTo("/");
-
-    }
-    public async void Delete(int id)
-    {
-
-        var httpResponse = await _orderServices.DeleteOrder(id);
-
-        if (httpResponse.IsSuccessStatusCode)
-        {
-            NavigationManager.NavigateTo("/orders");
-        }
-
 
     }
     public void goTo()
@@ -91,56 +89,33 @@
 
 
     </div>
+    <h3>Order @this.id</h3>
+    <h3 class="float-right nav-link">Bill: @bill JD</h3>
+    <div class="row">
 
-    <h3>Meals</h3>
-
-
-
-    @if (Data == null)
-    {
-
-
-        <h4>loading ... </h4> }
-    else
-    {
-        @if (Data.Any())
+        @if (Data == null)
         {
 
-           
 
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Order Id</th>
-            <th>Details</th>
-            <th>Delete</th>
-
-
-        </tr>
-    </thead>
-    <tbody>
-
-        @foreach (var item in Data)
+            <h4>loading ... </h4> }
+        else
         {
-
-        <tr @key="item.OrderId">
-            <td> @item.OrderId</td>
-
-            <td><a class="btn btn-info" href="single_order/@item.OrderId">Details</a></td>
-            <td><button class="btn btn-danger"@onclick="()=> { Delete(item.OrderId); }" >Delete</button></td>
-
-        </tr>
-
-
-        }
-    </tbody>
-</table>
-
-                }
-                else
+            @if (Data.Any())
+            {
+                @foreach (var item in Data)
                 {
-                    <p>loading ...</p>
+                    <div class=" col-sm-3 col-md-3 col-2 bg-light " style="width: 18rem;">
+                        <div class="card " style="width: 25rem;">
+                            <img class="card-img-top" src=@item.Image alt="meal image">
+                            <div class="card-body">
+                                <h5 class="card-title font-weight-bolder">@item.name </h5>
+                                <small>@item.Price</small>
+                                <p class="card-text">@item.Description</p>
+                            </div>
+                        </div>
+                    </div>
                 }
-    }
+            }
+        }
+        </div>
 </div>

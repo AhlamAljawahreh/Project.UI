@@ -82,8 +82,6 @@ namespace Project.Api.Controllers
 
             return NoContent();
         }
-
-
         [HttpPost]
         public async Task<ActionResult<Order>> PostProduct(Order order)
         {
@@ -93,7 +91,6 @@ namespace Project.Api.Controllers
             return CreatedAtAction("GetOrder", new { id = order.OrderId }, order);
         }
 
-        // DELETE: api/Movies/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Order>> DeleteProduct(int id)
         {
@@ -103,8 +100,15 @@ namespace Project.Api.Controllers
             {
                 return NotFound();
             }
+            var products = await _context.Products.Where(t => t.OrderId == id).ToListAsync();
 
-            _context.Orders.Remove(order);
+            foreach (var item in products)
+            {
+                _context.Products.Remove(item);
+
+            }
+             _context.Orders.Remove(order);
+
             await _context.SaveChangesAsync();
 
             return order;

@@ -18,11 +18,20 @@ namespace Project.UI.Services
         {
             this.httpClient = _httpClient;
         }
+
+        public async Task<Order> CreateOrder(Order order)
+        {
+            return await httpClient.PostJsonAsync<Order>("api/orders", order);
+        }
+
         public async Task<IEnumerable<Order>> GetOrders()
         {
             return await httpClient.GetJsonAsync<Order[]>("api/orders");
         }
-       
-    
+
+        public async Task<HttpResponseMessage> DeleteOrder(int id)
+        {
+            return await httpClient.DeleteAsync($"api/orders/{id}");
+        }
     }
 }

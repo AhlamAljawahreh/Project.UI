@@ -38,6 +38,10 @@ namespace Project.UI.Services
         {
             return await httpClient.DeleteAsync($"api/products/{id}");
         }
+        public async Task<IEnumerable<Product>> GetOrderProducts(int id)
+        {
+            return await httpClient.GetJsonAsync<Product[]>($"api/orders/myorder/{id}");
+        }
     }
      
 }

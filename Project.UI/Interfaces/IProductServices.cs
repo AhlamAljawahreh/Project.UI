@@ -14,6 +14,7 @@ namespace Project.UI.Services
         Task<HttpResponseMessage> EditMeal(Product product,int id);
         Task<Product> GetMeal(int id);
         Task<HttpResponseMessage> DeleteMeal(int id);
+        Task<IEnumerable<Product>> GetOrderProducts(int id);
 
 
     }

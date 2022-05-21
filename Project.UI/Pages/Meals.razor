@@ -12,6 +12,7 @@
     public string role { set; get; }
     public bool isLoggedIn { set; get; }
     public int id { set; get; }
+    public List<Product> Products = new List<Product>();
 
 
     private IEnumerable<Product> Data = null;
@@ -75,11 +76,17 @@
         </NavLink>
         @if (this.role == "Admin")
         {
-            <NavLink class="nav-link float-right" href="new_meals">
+            <NavLink class="nav-link float-right" href="orders">
                 Orders
             </NavLink>
             <NavLink class="nav-link float-right" href="new_meals">
                 New Meal
+            </NavLink>
+        }
+        else
+        {
+            <NavLink class="nav-link float-right" href="new_Order">
+                New Order
             </NavLink>
         }
 
