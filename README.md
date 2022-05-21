@@ -30,7 +30,7 @@ Web development task, Restaurant website
 ```
 1- clone this repo
 2- open Project.Ui/Blazor.Project.sln in Visual Studio 
-3- run Project.Api and Project.UI Projects .
+3- run Project.Api and Project.UI .
 ```
 
 
